@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tiny Steps · Toddler Growth Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<style>
+:root{--bg:#fff8f1;--bg2:#fff;--ink:#2a2038;--mute:#7a6f8a;--card:rgba(255,255,255,.72);--line:rgba(60,30,90,.09);--a:#ff7a59;--b:#ffb84d;--c:#8b5cf6;--d:#2dd4bf;--shadow:0 10px 40px -12px rgba(90,40,120,.22);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#130f1f;--bg2:#1c1630;--ink:#f4efff;--mute:#a79bbf;--card:rgba(36,28,58,.65);--line:rgba(255,255,255,.09);--shadow:0 10px 40px -12px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#130f1f;--bg2:#1c1630;--ink:#f4efff;--mute:#a79bbf;--card:rgba(36,28,58,.65);--line:rgba(255,255,255,.09);--shadow:0 10px 40px -12px rgba(0,0,0,.6);color-scheme:dark}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100%;padding:env(safe-area-inset-top,0px) 0 calc(96px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
+h1,h2,h3,h4,.f{font-family:Fredoka,Inter,sans-serif}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.aurora i{position:absolute;width:55vmax;height:55vmax;border-radius:50%;filter:blur(80px);opacity:.45;animation:drift 18s ease-in-out infinite alternate}
+.aurora i:nth-child(1){background:var(--a);top:-20vmax;left:-15vmax}
+.aurora i:nth-child(2){background:var(--c);bottom:-25vmax;right:-15vmax;animation-delay:-6s}
+.aurora i:nth-child(3){background:var(--d);top:30%;left:40%;width:35vmax;height:35vmax;opacity:.28;animation-delay:-11s}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15) rotate(25deg)}}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 0 8px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-size:24px;box-shadow:0 8px 22px -6px var(--a);animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px) rotate(-6deg)}}
+.brand h1{font-size:21px;line-height:1.1}.brand small{color:var(--mute);font-size:12px}
+.chip{display:flex;gap:8px;align-items:center;padding:8px 14px;border-radius:99px;background:var(--card);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-weight:600;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 #22c55e88;animation:ping 1.8s infinite}
+@keyframes ping{to{box-shadow:0 0 0 9px #22c55e00}}
+.glass{background:var(--card);border:1px solid var(--line);border-radius:26px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:26px;margin:14px 0 22px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,color-mix(in srgb,var(--a) 22%,transparent),color-mix(in srgb,var(--c) 18%,transparent));pointer-events:none}
+.hero>*{position:relative}
+.hero h2{font-size:clamp(24px,5vw,38px);line-height:1.1;margin:6px 0 10px}
+.hero h2 span{background:linear-gradient(90deg,var(--a),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mute);font-size:14px;line-height:1.55;max-width:46ch}
+.tag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--a)}
+.ring{position:relative;width:118px;height:118px}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10;stroke-linecap:round}
+.ring .t{stroke:var(--line)}.ring .p{stroke:url(#g);stroke-dasharray:314;stroke-dashoffset:314;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.9,.2,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-family:Fredoka;font-size:26px;line-height:1}
+.ring b small{display:block;font:500 10px Inter;color:var(--mute);margin-top:2px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pills span{font-size:12px;font-weight:500;padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+.sec{display:none}.sec.on{display:block;animation:rise .55s cubic-bezier(.2,.9,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:6px 0 16px;flex-wrap:wrap}
+.sh h3{font-size:22px}.sh p{color:var(--mute);font-size:13px;margin-top:2px}
+.rv{opacity:0;transform:translateY(22px) scale(.98);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.2,1);transition-delay:calc(var(--i,0)*55ms)}
+.rv.in{opacity:1;transform:none}
+.tl{position:relative;display:grid;gap:14px;padding-left:26px}
+.tl:before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--a),var(--c),var(--d));opacity:.35;border-radius:2px}
+.slot{padding:16px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;position:relative;transition:transform .3s,box-shadow .3s}
+.slot:before{content:"";position:absolute;left:-23px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:var(--bg2);border:3px solid var(--mute)}
+.slot.past{opacity:.55}.slot.past:before{border-color:#22c55e;background:#22c55e}
+.slot.now{transform:scale(1.015);border-color:transparent;background:linear-gradient(var(--bg2),var(--bg2)) padding-box,conic-gradient(from var(--ang,0deg),var(--a),var(--b),var(--c),var(--d),var(--a)) border-box;border:2px solid transparent;animation:spin 5s linear infinite}
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes spin{to{--ang:360deg}}
+.slot.now:before{border-color:var(--a);background:var(--a);animation:ping2 1.6s infinite}
+@keyframes ping2{0%{box-shadow:0 0 0 0 var(--a)}100%{box-shadow:0 0 0 12px transparent}}
+.em{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--h,var(--a)) 18%,transparent)}
+.slot h4{font-size:16px}.slot .tm{font-size:12px;font-weight:600;color:var(--a)}.slot p{font-size:12.5px;color:var(--mute);margin-top:3px;line-height:1.45}
+.badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:4px 10px;border-radius:99px;background:var(--a);color:#fff;margin-left:6px;vertical-align:middle}
+.btn{padding:9px 16px;border-radius:14px;font-weight:600;font-size:13px;background:linear-gradient(135deg,var(--a),var(--b));color:#fff;box-shadow:0 8px 20px -8px var(--a);transition:transform .2s}
+.btn:active{transform:scale(.94)}.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.filters button{padding:8px 15px;border-radius:99px;font-size:13px;font-weight:600;background:var(--card);border:1px solid var(--line);white-space:nowrap;transition:all .25s}
+.filters button.on{background:var(--ink);color:var(--bg);transform:scale(1.05)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:16px;margin-top:16px}
+.card{padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .35s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-6px) rotate(-.4deg)}
+.card .big{position:absolute;right:-10px;top:-14px;font-size:92px;opacity:.12;transition:transform .5s}.card:hover .big{transform:scale(1.2) rotate(12deg)}
+.cat{align-self:flex-start;font-size:11px;font-weight:700;padding:5px 11px;border-radius:99px;background:color-mix(in srgb,var(--h) 18%,transparent);color:var(--h)}
+.card h4{font-size:19px}.card p{font-size:13px;color:var(--mute);line-height:1.5;flex:1}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);align-items:center}
+.ok{color:#22c55e;font-weight:700}
+.sc{padding:20px;display:grid;gap:10px;align-content:start}
+.bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));border-radius:9px;transition:width .7s cubic-bezier(.2,.9,.2,1)}
+.it{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;cursor:pointer;transition:background .2s}.it:hover{background:var(--line)}
+.cb{width:22px;height:22px;border-radius:8px;border:2px solid var(--mute);display:grid;place-items:center;flex:none;transition:all .25s cubic-bezier(.3,1.6,.5,1);font-size:13px;color:#fff}
+.it.x .cb{background:#22c55e;border-color:#22c55e;transform:scale(1.1)}.it.x span{text-decoration:line-through;color:var(--mute)}
+.it span{flex:1;font-size:14px}.it button{opacity:.35;font-size:14px}.it button:hover{opacity:1}
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:4px;padding:6px;border-radius:24px;background:var(--card);border:1px solid var(--line);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:var(--shadow);width:min(92vw,430px)}
+nav button{flex:1;padding:10px 4px;border-radius:18px;font-size:12px;font-weight:600;display:grid;gap:2px;justify-items:center;color:var(--mute);transition:all .3s;position:relative;z-index:1}
+nav button span{font-size:19px}nav button.on{color:#fff}
+nav .pill{position:absolute;top:6px;bottom:6px;left:6px;border-radius:18px;background:linear-gradient(135deg,var(--a),var(--c));transition:transform .45s cubic-bezier(.3,1.3,.5,1);box-shadow:0 8px 20px -6px var(--a)}
+.fab{position:fixed;right:18px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:29;width:56px;height:56px;border-radius:20px;font-size:26px;background:linear-gradient(135deg,var(--b),var(--a));box-shadow:0 12px 28px -8px var(--a);animation:bob 3s ease-in-out infinite}
+.ov{position:fixed;inset:0;z-index:50;background:rgba(15,8,30,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.on{opacity:1;pointer-events:auto}
+.sheet{background:var(--bg2);width:min(640px,100%);max-height:90%;overflow:auto;border-radius:30px 30px 0 0;padding:14px 22px calc(26px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .5s cubic-bezier(.2,1,.3,1);position:relative}
+.ov.on .sheet{transform:none}
+@media(min-width:700px){.ov{align-items:center}.sheet{border-radius:30px;max-height:88%;transform:translateY(40px) scale(.94);opacity:0;transition:transform .5s cubic-bezier(.2,1,.3,1),opacity .3s}.ov.on .sheet{transform:none;opacity:1}}
+.grab{width:42px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 14px}
+.x{position:absolute;right:16px;top:16px;width:36px;height:36px;border-radius:50%;background:var(--line);font-size:16px}
+.sheet h2{font-size:26px;margin:8px 0}.sheet h5{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--mute);margin:20px 0 8px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}.tags span{font-size:12px;padding:6px 11px;border-radius:12px;background:var(--line)}
+.st{display:flex;gap:12px;padding:10px 0;font-size:14px;line-height:1.5;border-bottom:1px dashed var(--line)}
+.st b{width:24px;height:24px;border-radius:50%;background:var(--a);color:#fff;display:grid;place-items:center;font-size:12px;flex:none}
+.sheet ul{padding-left:18px;font-size:14px;line-height:1.7;color:var(--mute)}
+.tip{margin-top:16px;padding:14px;border-radius:18px;background:color-mix(in srgb,var(--b) 18%,transparent);font-size:13.5px;line-height:1.55}
+.in1{width:100%;padding:13px 15px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;margin:6px 0 10px}
+.pick{text-align:center;padding:10px 0}.pick .e{font-size:64px;display:inline-block;animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0) rotate(-40deg)}}
+@media(max-width:560px){.hero{grid-template-columns:1fr}.ring{margin:0 auto;order:-1}.chip.cl{display:none}.slot{grid-template-columns:auto 1fr}.slot .btn{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="aurora"><i></i><i></i><i></i></div>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="logo">🧸</div><div><h1>Tiny Steps</h1><small>Play &amp; growth · ages 24–36 months</small></div></div>
+  <div class="chip cl"><span class="dot"></span><span id="clock" class="f">--:--</span></div>
+</header>
+
+<section class="glass hero rv">
+  <div>
+    <div class="tag" id="greet">Good day</div>
+    <h2>Let’s grow <span>big little minds</span> today</h2>
+    <p>Two-year-olds learn by touching, moving and copying you. Each activity below targets one skill; tap one to get steps, supplies and a pro tip.</p>
+    <div class="pills"><span>🏃 Gross motor</span><span>✋ Fine motor</span><span>🧠 Cognitive</span><span>💬 Language</span></div>
+  </div>
+  <div class="ring"><svg viewBox="0 0 120 120" width="118" height="118"><defs><linearGradient id="g"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><circle class="t" cx="60" cy="60" r="50"/><circle class="p" id="prog" cx="60" cy="60" r="50"/></svg><b id="ringTxt">0/6<small>done today</small></b></div>
+</section>
+
+<main>
+  <section class="sec on" id="s-schedule">
+    <div class="sh"><div><h3>Today’s rhythm</h3><p>The glowing card follows the real clock.</p></div></div>
+    <div class="tl" id="tl"></div>
+  </section>
+  <section class="sec" id="s-activities">
+    <div class="sh"><div><h3>Activity library</h3><p>Filter by the skill you want to build.</p></div></div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+  <section class="sec" id="s-shopping">
+    <div class="sh"><div><h3>Supply checklist</h3><p>Buy it, gather it, tick it.</p></div><div style="display:flex;gap:8px"><button class="btn ghost" onclick="resetShop()">Reset</button><button class="btn" onclick="openAdd()">+ Add</button></div></div>
+    <div class="grid" id="shop"></div>
+  </section>
+</main>
+</div>
+
+<button class="fab" onclick="openPick()" aria-label="Random activity">🎲</button>
+<nav id="nav"><div class="pill" id="pill"></div>
+  <button class="on" data-t="schedule"><span>🗓️</span>Today</button>
+  <button data-t="activities"><span>🧩</span>Activities</button>
+  <button data-t="shopping"><span>🛒</span>Supplies</button>
+</nav>
+
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const H={gross:'#ff7a59',fine:'#0ea5e9',cognitive:'#eab308',language:'#10b981'};
+const A=[
+{id:1,t:'Living Room Obstacle Course',c:'gross',n:'Gross Motor',e:'🏃',d:'20–30 min',s:'Build a soft obstacle course from cushions, pillows and rolled blankets to crawl over and step through.',sup:['Couch cushions','Pillows','Soft blankets','Painter’s tape'],st:['Clear a safe space with a soft carpet or play mat.','Lay cushions flat as stepping stones.','Stack pillows into gentle mounds to crawl over.','Tape a zig-zag line to walk like a tightrope.','Cheer them across the course!'],b:['Builds core strength and spatial awareness','Improves balance and coordination','Burns energy in a structured way'],tip:'Stay close. Pretend the floor is lava, or deliver a stuffed animal to the finish line.'},
+{id:2,t:'Sensory Rice & Funnel Pouring',c:'fine',n:'Fine Motor',e:'🍚',d:'15–25 min',s:'A shallow bin of dry rice, cups, spoons and funnels for tactile scooping and pouring.',sup:['Shallow bin','Dry rice or large pasta','Funnels','Measuring cups and spoons'],st:['Put a towel under the bin to catch spills.','Add 2–3 cups of rice or large pasta.','Show how to scoop into the funnel and watch it pour.','Let them explore freely.'],b:['Refines hand-eye coordination and pincer grasp','Calming sensory input','Early full/empty concepts'],tip:'Use large pasta or oats if they still mouth small objects. Supervise closely.'},
+{id:3,t:'Color Sorting Challenge',c:'cognitive',n:'Cognitive',e:'🎨',d:'15–20 min',s:'Help your toddler sort colored balls or blocks into matching baskets.',sup:['Colored paper','Small baskets','Colored balls or blocks'],st:['Label 3–4 baskets with colored paper.','Mix the blocks in front of them.','Drop a red block in the red basket: “Red!”','Ask, “Where does blue go?”','Celebrate with high-fives.'],b:['Color recognition and categorizing','Problem-solving','Bilateral hand coordination'],tip:'Start with just two contrasting colors before adding more.'},
+{id:4,t:'Animal Sounds & Story Time',c:'language',n:'Language',e:'📚',d:'15–20 min',s:'Read lift-the-flap books, mimic animal sounds and name what you see.',sup:['Lift-the-flap board books','Matching stuffed animals'],st:['Snuggle into a cozy reading nook.','Read slowly with expressive animal voices.','Pause before the sound: “What does the cow say?”','Ask them to point: “Where’s the yellow duck?”'],b:['Vocabulary and articulation','Love of books','Listening and joint attention'],tip:'Let them hold the book and turn the pages themselves.'},
+{id:5,t:'Freeze Dance Party',c:'gross',n:'Gross Motor',e:'🎵',d:'15 min',s:'Dance wildly to upbeat music and freeze like a statue when it stops.',sup:['Speaker or phone','Open floor space'],st:['Explain: music = dance, stop = freeze!','Dance together with silly moves.','Pause and shout “FREEZE!”','Hold a funny pose, then restart.'],b:['Impulse control','Rhythm and balance','Joyful bonding'],tip:'Keep freezes to 3–5 seconds. Impulse control is brand new at this age.'},
+{id:6,t:'Playdough Squeeze & Roll',c:'fine',n:'Fine Motor',e:'🟣',d:'20 min',s:'Non-toxic dough, a rolling pin and blunt cutters build hand strength.',sup:['Non-toxic playdough','Plastic rolling pin','Blunt cookie cutters'],st:['Set up a tray at toddler height.','Show squishing, squeezing and rolling snakes.','Flatten with the rolling pin.','Press cutters in to reveal shapes.'],b:['Hand strength for future writing','Creative expression','Sustained focus'],tip:'Seal the dough in an airtight tub right after play.'}];
+const S=[
+[480,540,'Wake-up & Breakfast','Healthy breakfast, milk and gentle free play.',0,'🥣','#f59e0b'],
+[540,630,'Obstacle Course','Burn morning energy and build coordination.',1,'🏃','#ff7a59'],
+[630,660,'Sensory Rice Pouring','Tactile exploration and pouring practice.',2,'🍚','#0ea5e9'],
+[660,720,'Playdough Time','Hand strengthening and shape making.',6,'🟣','#ec4899'],
+[720,870,'Lunch & Nap','Nutritious lunch, then a restorative 1.5–2 hour nap.',0,'😴','#6366f1'],
+[900,945,'Color Sorting','Problem-solving and color matching.',3,'🎨','#eab308'],
+[960,990,'Freeze Dance','Rhythm, balance and self-regulation.',5,'🎵','#8b5cf6'],
+[1050,1095,'Story Time','Quiet language building and snuggles.',4,'📚','#10b981'],
+[1110,1260,'Dinner, Bath & Bed','Calm wind-down, warm bath and lullabies.',0,'🌙','#3b82f6']];
+const DS={toys:['Chunky wooden puzzles (4–8 pieces)','Funnels & measuring cups','Soft colorful balls or blocks','Lift-the-flap board books'],crafts:['Non-toxic playdough','Colored construction paper','Child-safe cookie cutters','Dry rice or large pasta'],home:['Shallow storage bins (2)','Painter’s tape','Shoeboxes or sorting baskets']};
+const CM={toys:['🧸','Toys & Play'],crafts:['🎨','Arts & Sensory'],home:['🏠','Household']};
+const $=id=>document.getElementById(id);
+const get=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const put=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const dayKey='tg_done_'+new Date().toDateString();
+let done=get(dayKey,[]);
+let shop=get('tg_shop2',null)||(()=>{let n=0,o={};for(const k in DS)o[k]=DS[k].map(x=>({id:'d'+n++,n:x,x:false}));return o})();
+
+function clock(){const d=new Date();$('clock').textContent=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});const h=d.getHours();$('greet').textContent=h<12?'Good morning ☀️':h<17?'Good afternoon 🌤️':'Good evening 🌙'}
+function ring(){const n=done.length;$('ringTxt').innerHTML=n+'/'+A.length+'<small>done today</small>';$('prog').style.strokeDashoffset=314-314*n/A.length}
+const fmt=m=>{const h=Math.floor(m/60),mm=m%60;return(h%12||12)+(mm?':'+String(mm).padStart(2,'0'):'')+(h<12?' AM':' PM')};
+function renderSched(){
+  const d=new Date(),m=d.getHours()*60+d.getMinutes();
+  let cur=S.findIndex(s=>m>=s[0]&&m<s[1]),label='Now';
+  if(cur<0){cur=S.findIndex(s=>s[0]>m);label='Up next';if(cur<0)cur=-1}
+  $('tl').innerHTML=S.map((s,i)=>{const a=s[4]?A.find(x=>x.id===s[4]):null,past=m>=s[1];
+  return `<div class="glass slot rv ${i===cur?'now':''} ${past&&i!==cur?'past':''}" style="--i:${i};--h:${s[6]}">
+  <div class="em">${s[5]}</div><div><div class="tm">${fmt(s[0])} – ${fmt(s[1])}${i===cur?`<span class="badge">${label}</span>`:''}</div><h4>${s[2]}</h4><p>${s[3]}</p></div>
+  ${a?`<button class="btn ${i===cur?'':'ghost'}" onclick="openAct(${a.id})">${done.includes(a.id)?'✓ Done':'Open'}</button>`:''}</div>`}).join('');
+  reveal();
+}
+let flt='all';
+function renderFilters(){const f=[['all','✨ All'],['gross','🏃 Gross'],['fine','✋ Fine'],['cognitive','🧠 Cognitive'],['language','💬 Language']];
+  $('filters').innerHTML=f.map(x=>`<button class="${x[0]===flt?'on':''}" onclick="flt='${x[0]}';renderFilters();renderGrid()">${x[1]}</button>`).join('')}
+function renderGrid(){
+  $('grid').innerHTML=A.filter(a=>flt==='all'||a.c===flt).map((a,i)=>`<article class="glass card rv" style="--i:${i};--h:${H[a.c]}" onclick="openAct(${a.id})"><div class="big">${a.e}</div>
+  <span class="cat">${a.n}</span><h4>${a.t}</h4><p>${a.s}</p><div class="meta"><span>⏱ ${a.d} · ${a.sup.length} items</span>${done.includes(a.id)?'<span class="ok">✓ Done</span>':'<span>Guide →</span>'}</div></article>`).join('');
+  reveal();
+}
+function renderShop(){
+  $('shop').innerHTML=Object.keys(CM).map((k,i)=>{const L=shop[k]||[],c=L.filter(x=>x.x).length;
+  return `<div class="glass sc rv" style="--i:${i}"><div style="display:flex;justify-content:space-between;align-items:center"><h4 class="f" style="font-size:18px">${CM[k][0]} ${CM[k][1]}</h4><small style="color:var(--mute)">${c}/${L.length}</small></div>
+  <div class="bar"><i style="width:${L.length?c/L.length*100:0}%"></i></div>
+  ${L.map(x=>`<div class="it ${x.x?'x':''}" onclick="tog('${k}','${x.id}')"><div class="cb">${x.x?'✓':''}</div><span>${x.n}</span><button onclick="event.stopPropagation();del('${k}','${x.id}')" aria-label="Remove">✕</button></div>`).join('')||'<small style="color:var(--mute)">Nothing here yet.</small>'}</div>`}).join('');
+  put('tg_shop2',shop);reveal();
+}
+function tog(k,id){const x=shop[k].find(y=>y.id===id);x.x=!x.x;renderShop();if(x.x&&window.confetti)confetti({particleCount:24,spread:50,startVelocity:22,origin:{y:.8},scalar:.7})}
+function del(k,id){shop[k]=shop[k].filter(y=>y.id!==id);renderShop()}
+function resetShop(){shop=(()=>{let n=0,o={};for(const k in DS)o[k]=DS[k].map(x=>({id:'d'+n++,n:x,x:false}));return o})();renderShop()}
+function show(h){$('sheet').innerHTML='<div class="grab"></div><button class="x" onclick="closeOv()" aria-label="Close">✕</button>'+h;$('ov').classList.add('on')}
+function closeOv(){$('ov').classList.remove('on')}
+$('ov').addEventListener('click',e=>{if(e.target.id==='ov')closeOv()});
+function openAct(id){const a=A.find(x=>x.id===id),d=done.includes(id);
+  show(`<span class="cat" style="--h:${H[a.c]}">${a.e} ${a.n}</span><h2>${a.t}</h2><p style="color:var(--mute);font-size:14px;line-height:1.55">${a.s}</p>
+  <h5>Gather</h5><div class="tags">${a.sup.map(x=>`<span>${x}</span>`).join('')}</div>
+  <h5>Steps</h5>${a.st.map((x,i)=>`<div class="st"><b>${i+1}</b><span>${x}</span></div>`).join('')}
+  <h5>Why it helps</h5><ul>${a.b.map(x=>`<li>${x}</li>`).join('')}</ul>
+  <div class="tip">💡 <b>Pro tip:</b> ${a.tip}</div>
+  <button class="btn" style="width:100%;margin-top:18px;padding:14px;font-size:15px" onclick="finish(${id})">${d?'Undo completion':'🏆 Mark completed'}</button>`)}
+function finish(id){
+  if(done.includes(id))done=done.filter(x=>x!==id);
+  else{done.push(id);if(window.confetti){confetti({particleCount:130,spread:80,origin:{y:.7},zIndex:99});confetti({particleCount:50,angle:60,spread:60,origin:{x:0,y:.8},zIndex:99});confetti({particleCount:50,angle:120,spread:60,origin:{x:1,y:.8},zIndex:99})}}
+  put(dayKey,done);ring();renderGrid();renderSched();closeOv()}
+function openPick(){const a=A[Math.floor(Math.random()*A.length)];
+  show(`<div class="pick"><div class="e">${a.e}</div><h2>${a.t}</h2><span class="cat" style="--h:${H[a.c]}">${a.n} · ${a.d}</span><p style="color:var(--mute);font-size:14px;margin:14px 0;line-height:1.5">${a.s}</p>
+  <div style="display:flex;gap:8px"><button class="btn ghost" style="flex:1" onclick="openPick()">🎲 Another</button><button class="btn" style="flex:1" onclick="openAct(${a.id})">Open guide</button></div></div>`);
+  if(window.confetti)confetti({particleCount:50,spread:60,origin:{y:.6},zIndex:99})}
+function openAdd(){show(`<h2>Add a supply</h2><input class="in1" id="nn" placeholder="e.g. Chunky wooden puzzle"><select class="in1" id="nc"><option value="toys">Toys &amp; Play</option><option value="crafts">Arts &amp; Sensory</option><option value="home">Household</option></select><button class="btn" style="width:100%;padding:14px" onclick="addS()">Add to checklist</button>`);setTimeout(()=>$('nn').focus(),400)}
+function addS(){const n=$('nn').value.trim();if(!n)return;const k=$('nc').value;(shop[k]=shop[k]||[]).push({id:'u'+Date.now(),n,x:false});closeOv();renderShop()}
+function reveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.rv:not(.in)').forEach(el=>io.observe(el))}
+const tabs=['schedule','activities','shopping'];
+function movePill(i){const b=$('nav').querySelectorAll('button')[i];$('pill').style.width=b.offsetWidth+'px';$('pill').style.transform='translateX('+(b.offsetLeft-6)+'px)'}
+$('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const t=b.dataset.t,i=tabs.indexOf(t);
+  $('nav').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  tabs.forEach(x=>$('s-'+x).classList.toggle('on',x===t));movePill(i);window.scrollTo({top:0,behavior:'smooth'});reveal()});
+addEventListener('resize',()=>movePill(tabs.findIndex(t=>$('s-'+t).classList.contains('on'))));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOv()});
+clock();setInterval(clock,1000);setInterval(renderSched,60000);
+renderSched();renderFilters();renderGrid();renderShop();reveal();
+requestAnimationFrame(()=>{movePill(0);setTimeout(ring,300)});
+</script>
+</body>
+</html>
